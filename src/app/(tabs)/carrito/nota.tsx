@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { useApp } from "@/context/AppContext";
+import DondeEstoy from "@/components/DondeEstoy";
 
 export default function NotaCarritoScreen() {
   const { nota, setNota } = useApp();
@@ -27,6 +28,7 @@ export default function NotaCarritoScreen() {
         onChangeText={setNota}
         multiline
       />
+      <DondeEstoy />
     </View>
   );
 }

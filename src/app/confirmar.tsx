@@ -2,6 +2,7 @@ import { router, Stack } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useApp } from "@/context/AppContext";
+import DondeEstoy from "@/components/DondeEstoy";
 
 export default function ConfirmarScreen() {
   const { carrito, nota, confirmarPedido } = useApp();
@@ -45,7 +46,9 @@ export default function ConfirmarScreen() {
               <Text style={styles.nombre}>{plato.nombre}</Text>
               <Text>${plato.precio}</Text>
             </View>
+            
           ))}
+          
 
           {nota ? (
             <View style={styles.notaContainer}>
@@ -63,7 +66,9 @@ export default function ConfirmarScreen() {
             <Text style={styles.textoBoton}>Confirmar</Text>
           </Pressable>
         </>
+        
       )}
+      <DondeEstoy />
     </ScrollView>
   );
 }

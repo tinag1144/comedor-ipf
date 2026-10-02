@@ -2,6 +2,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useApp } from "@/context/AppContext";
+import DondeEstoy from "@/components/DondeEstoy";
 
 export default function TurnoScreen() {
   /*
@@ -69,6 +70,7 @@ export default function TurnoScreen() {
         Tenés {pedidosAdelante} {pedidosAdelante === 1 ? "pedido" : "pedidos"}{" "}
         adelante.
       </Text>
+      <DondeEstoy />
     </View>
   );
 }

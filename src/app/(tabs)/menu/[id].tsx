@@ -1,5 +1,6 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import DondeEstoy from "@/components/DondeEstoy";
 
 import { useApp } from "@/context/AppContext";
 import { platos } from "@/data/plato";
@@ -29,6 +30,7 @@ export default function DetallePlatoScreen() {
 
         <Text style={styles.titulo}>Plato no encontrado</Text>
         <Text>No existe un plato con el id {id}.</Text>
+        <DondeEstoy />
       </View>
     );
   }
@@ -54,6 +56,7 @@ export default function DetallePlatoScreen() {
       <Pressable style={styles.boton} onPress={() => agregarAlCarrito(plato)}>
         <Text style={styles.textoBoton}>Agregar al carrito</Text>
       </Pressable>
+      <DondeEstoy />
     </View>
   );
 }

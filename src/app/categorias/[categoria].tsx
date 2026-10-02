@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { CategoriaPlato, platos } from '@/data/plato';
+import DondeEstoy from '@/components/DondeEstoy';
 
 const categoriasValidas: CategoriaPlato[] = [
   'desayuno',
@@ -55,6 +56,7 @@ export default function CategoriaScreen() {
         <Text>
           La categoría "{categoria}" no existe.
         </Text>
+        <DondeEstoy />
       </View>
     );
   }
@@ -106,6 +108,7 @@ export default function CategoriaScreen() {
           </View>
         </Link>
       ))}
+      <DondeEstoy />
     </ScrollView>
   );
 }
