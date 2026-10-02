@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 
+import DondeEstoy from '@/components/DondeEstoy';
 import { CategoriaPlato, platos } from '@/data/plato';
 
 const categorias: CategoriaPlato[] = [
@@ -60,6 +61,8 @@ export default function MenuScreen() {
           </View>
         );
       })}
+
+      <DondeEstoy />
     </ScrollView>
   );
 }

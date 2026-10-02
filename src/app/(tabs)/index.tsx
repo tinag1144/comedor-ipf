@@ -6,6 +6,8 @@ import {
   View,
 } from 'react-native';
 
+import DondeEstoy from '@/components/DondeEstoy';
+
 export default function InicioScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -23,6 +25,7 @@ export default function InicioScreen() {
         <Link href="/menu" style={styles.tarjeta}>
           <View>
             <Text style={styles.tarjetaTitulo}>Menú</Text>
+
             <Text style={styles.tarjetaTexto}>
               Ver los platos disponibles.
             </Text>
@@ -32,8 +35,19 @@ export default function InicioScreen() {
         <Link href="/buscar" style={styles.tarjeta}>
           <View>
             <Text style={styles.tarjetaTitulo}>Buscar</Text>
+
             <Text style={styles.tarjetaTexto}>
               Buscar platos por nombre o categoría.
+            </Text>
+          </View>
+        </Link>
+
+        <Link href="/ayuda" style={styles.tarjeta}>
+          <View>
+            <Text style={styles.tarjetaTitulo}>Ayuda</Text>
+
+            <Text style={styles.tarjetaTexto}>
+              Consultar información útil.
             </Text>
           </View>
         </Link>
@@ -41,12 +55,15 @@ export default function InicioScreen() {
         <Link href="/login" style={styles.tarjeta}>
           <View>
             <Text style={styles.tarjetaTitulo}>Cocina</Text>
+
             <Text style={styles.tarjetaTexto}>
               Ingreso del personal de cocina.
             </Text>
           </View>
         </Link>
       </View>
+
+      <DondeEstoy />
     </ScrollView>
   );
 }

@@ -1,14 +1,27 @@
-import { Link } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Link } from 'expo-router';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-import { useApp } from "@/context/AppContext";
+import DondeEstoy from '@/components/DondeEstoy';
+import { useApp } from '@/context/AppContext';
 
 export default function CarritoScreen() {
-  const { carrito, deshacerUltimo, puedeDeshacer, nota } = useApp();
+  const {
+    carrito,
+    deshacerUltimo,
+    puedeDeshacer,
+    nota,
+  } = useApp();
 
   const total = carrito.reduce(
-    (acumulador, plato) => acumulador + plato.precio,
-    0,
+    (acumulador, plato) =>
+      acumulador + plato.precio,
+    0
   );
 
   return (
@@ -20,19 +33,34 @@ export default function CarritoScreen() {
       ) : (
         <>
           {carrito.map((plato, indice) => (
-            <View key={`${plato.id}-${indice}`} style={styles.item}>
+            <View
+              key={`${plato.id}-${indice}`}
+              style={styles.item}
+            >
               <View>
-                <Text style={styles.nombre}>{plato.nombre}</Text>
-                <Text style={styles.descripcion}>{plato.descripcion}</Text>
+                <Text style={styles.nombre}>
+                  {plato.nombre}
+                </Text>
+
+                <Text style={styles.descripcion}>
+                  {plato.descripcion}
+                </Text>
               </View>
 
-              <Text style={styles.precio}>${plato.precio}</Text>
+              <Text style={styles.precio}>
+                ${plato.precio}
+              </Text>
             </View>
           ))}
 
           <View style={styles.totalContainer}>
-            <Text style={styles.totalTexto}>Total</Text>
-            <Text style={styles.totalPrecio}>${total}</Text>
+            <Text style={styles.totalTexto}>
+              Total
+            </Text>
+
+            <Text style={styles.totalPrecio}>
+              ${total}
+            </Text>
           </View>
         </>
       )}
@@ -40,27 +68,38 @@ export default function CarritoScreen() {
       <Pressable
         style={[
           styles.botonDeshacer,
-          !puedeDeshacer && styles.botonDeshabilitado,
+          !puedeDeshacer &&
+            styles.botonDeshabilitado,
         ]}
         onPress={deshacerUltimo}
         disabled={!puedeDeshacer}
       >
-        <Text style={styles.textoBoton}>Deshacer último</Text>
+        <Text style={styles.textoBoton}>
+          Deshacer último
+        </Text>
       </Pressable>
 
-      <Link href="/carrito/nota" style={styles.linkNota}>
-        {nota ? `Editar nota: ${nota}` : "Agregar nota para cocina"}
+      <Link
+        href="/carrito/nota"
+        style={styles.linkNota}
+      >
+        {nota
+          ? `Editar nota: ${nota}`
+          : 'Agregar nota para cocina'}
       </Link>
 
       <Link
         href="/confirmar"
         style={[
           styles.botonConfirmar,
-          carrito.length === 0 && styles.botonDeshabilitado,
+          carrito.length === 0 &&
+            styles.botonDeshabilitado,
         ]}
       >
         Confirmar pedido
       </Link>
+
+      <DondeEstoy />
     </ScrollView>
   );
 }
@@ -73,67 +112,67 @@ const styles = StyleSheet.create({
 
   titulo: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   item: {
     borderWidth: 1,
-    borderColor: "#dddddd",
+    borderColor: '#dddddd',
     borderRadius: 10,
     padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 15,
   },
 
   nombre: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 
   descripcion: {
     marginTop: 4,
-    color: "#666666",
+    color: '#666666',
   },
 
   precio: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   totalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
     paddingTop: 15,
     borderTopWidth: 1,
-    borderTopColor: "#dddddd",
+    borderTopColor: '#dddddd',
   },
 
   totalTexto: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   totalPrecio: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   botonDeshacer: {
-    backgroundColor: "#ef476f",
+    backgroundColor: '#ef476f',
     paddingVertical: 14,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
 
   botonConfirmar: {
-    backgroundColor: "#06d6a0",
-    color: "#073b4c",
+    backgroundColor: '#06d6a0',
+    color: '#073b4c',
     paddingVertical: 14,
     borderRadius: 10,
-    textAlign: "center",
-    fontWeight: "bold",
-    overflow: "hidden",
+    textAlign: 'center',
+    fontWeight: 'bold',
+    overflow: 'hidden',
   },
 
   botonDeshabilitado: {
@@ -141,13 +180,13 @@ const styles = StyleSheet.create({
   },
 
   textoBoton: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   linkNota: {
-    color: "#118ab2",
-    fontWeight: "600",
+    color: '#118ab2',
+    fontWeight: '600',
   },
 });
