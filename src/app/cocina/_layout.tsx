@@ -14,7 +14,6 @@ export default function CocinaLayout() {
         headerTintColor: COLORES.crema,
 
         drawerActiveTintColor: COLORES.verde,
-
         drawerInactiveTintColor: COLORES.texto,
 
         drawerActiveBackgroundColor:
