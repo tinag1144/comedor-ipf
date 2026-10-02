@@ -1,3 +1,4 @@
+import DondeEstoy from '@/components/DondeEstoy';
 import { Link, Stack } from 'expo-router';
 import {
   ScrollView,
@@ -70,6 +71,7 @@ export default function AyudaScreen() {
           Cancelación de pedidos
         </Link>
       </View>
+      <DondeEstoy />
     </ScrollView>
   );
 }

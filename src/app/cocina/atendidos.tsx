@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { useApp } from '@/context/AppContext';
+import DondeEstoy from '@/components/DondeEstoy';
 
 export default function AtendidosScreen() {
   const { pedidosAtendidos } = useApp();
@@ -45,6 +46,7 @@ export default function AtendidosScreen() {
           </View>
         ))
       )}
+      <DondeEstoy />
     </ScrollView>
   );
 }

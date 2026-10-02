@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { CategoriaPlato, platos } from '@/data/plato';
+import DondeEstoy from '@/components/DondeEstoy';
 
 const categorias: CategoriaPlato[] = [
   'desayuno',
@@ -138,6 +139,7 @@ export default function BuscarScreen() {
           </View>
         ))
       )}
+      <DondeEstoy />
     </ScrollView>
   );
 }

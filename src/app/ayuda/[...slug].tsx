@@ -1,3 +1,4 @@
+import DondeEstoy from '@/components/DondeEstoy';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import {
   ScrollView,
@@ -76,6 +77,7 @@ export default function ArticuloAyudaScreen() {
       <Text style={styles.ruta}>
         Ruta recibida: {ruta}
       </Text>
+      <DondeEstoy />
     </ScrollView>
   );
 }

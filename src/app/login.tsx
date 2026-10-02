@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { useApp } from '@/context/AppContext';
+import DondeEstoy from '@/components/DondeEstoy';
 
 export default function LoginScreen() {
   const { iniciarSesion } = useApp();
@@ -82,6 +83,7 @@ export default function LoginScreen() {
           Ingresar
         </Text>
       </Pressable>
+      <DondeEstoy />
     </View>
   );
 }

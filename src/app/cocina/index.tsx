@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { useApp } from '@/context/AppContext';
+import DondeEstoy from '@/components/DondeEstoy';
 
 export default function CocinaScreen() {
   const {
@@ -67,6 +68,7 @@ export default function CocinaScreen() {
               Atender siguiente
             </Text>
           </Pressable>
+          <DondeEstoy />
         </View>
       )}
 

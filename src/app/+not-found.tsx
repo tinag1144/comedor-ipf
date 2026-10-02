@@ -1,3 +1,4 @@
+import DondeEstoy from '@/components/DondeEstoy';
 import { Link, Stack, usePathname } from 'expo-router';
 import {
   StyleSheet,
@@ -44,6 +45,7 @@ export default function NotFoundScreen() {
       >
         Volver al inicio
       </Link>
+      <DondeEstoy />
     </View>
   );
 }
