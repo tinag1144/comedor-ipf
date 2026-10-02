@@ -1,11 +1,11 @@
+import { Link } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useApp } from "@/context/AppContext";
 
 export default function CarritoScreen() {
-  const { carrito, deshacerUltimo, puedeDeshacer } = useApp();
+  const { carrito, deshacerUltimo, puedeDeshacer, nota } = useApp();
 
-  // Calculamos el total sumando el precio de todos los platos.
   const total = carrito.reduce(
     (acumulador, plato) => acumulador + plato.precio,
     0,
@@ -15,17 +15,14 @@ export default function CarritoScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>Carrito</Text>
 
-      {/* Si no hay platos mostramos un mensaje */}
       {carrito.length === 0 ? (
         <Text>El carrito está vacío.</Text>
       ) : (
         <>
-          {/* Recorremos los platos agregados */}
           {carrito.map((plato, indice) => (
             <View key={`${plato.id}-${indice}`} style={styles.item}>
               <View>
                 <Text style={styles.nombre}>{plato.nombre}</Text>
-
                 <Text style={styles.descripcion}>{plato.descripcion}</Text>
               </View>
 
@@ -50,6 +47,20 @@ export default function CarritoScreen() {
       >
         <Text style={styles.textoBoton}>Deshacer último</Text>
       </Pressable>
+
+      <Link href="/carrito/nota" style={styles.linkNota}>
+        {nota ? `Editar nota: ${nota}` : "Agregar nota para cocina"}
+      </Link>
+
+      <Link
+        href="/confirmar"
+        style={[
+          styles.botonConfirmar,
+          carrito.length === 0 && styles.botonDeshabilitado,
+        ]}
+      >
+        Confirmar pedido
+      </Link>
     </ScrollView>
   );
 }
@@ -113,7 +124,16 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
+  },
+
+  botonConfirmar: {
+    backgroundColor: "#06d6a0",
+    color: "#073b4c",
+    paddingVertical: 14,
+    borderRadius: 10,
+    textAlign: "center",
+    fontWeight: "bold",
+    overflow: "hidden",
   },
 
   botonDeshabilitado: {
@@ -124,5 +144,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
+  },
+
+  linkNota: {
+    color: "#118ab2",
+    fontWeight: "600",
   },
 });
