@@ -1,4 +1,5 @@
 import { Link, Stack } from 'expo-router';
+
 import {
   Pressable,
   ScrollView,
@@ -7,151 +8,84 @@ import {
   View,
 } from 'react-native';
 
-import { useApp } from '@/context/AppContext';
 import DondeEstoy from '@/components/DondeEstoy';
-
-export default function CocinaScreen() {
-  const {
-    pedidoActual,
-    pedidosEnEspera,
-    atenderSiguiente,
-    cerrarSesion,
-  } = useApp();
-
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Stack.Screen
-        options={{
-          title: 'Cocina',
-        }}
-      />
-
-      <Text style={styles.titulo}>Cocina</Text>
-
-      <Text style={styles.espera}>
-        Pedidos en espera: {pedidosEnEspera.length}
-      </Text>
-
-      {!pedidoActual ? (
-        <Text>No hay pedidos pendientes.</Text>
-      ) : (
-        <View style={styles.pedido}>
-          <Text style={styles.numero}>
-            Pedido #{pedidoActual.numero}
-          </Text>
-
-          <Text style={styles.subtitulo}>
-            Productos
-          </Text>
-
-          {pedidoActual.items.map((plato, indice) => (
-            <Text key={`${plato.id}-${indice}`}>
-              • {plato.nombre}
-            </Text>
-          ))}
-
-          {pedidoActual.nota ? (
-            <View style={styles.nota}>
-              <Text style={styles.subtitulo}>
-                Nota
-              </Text>
-
-              <Text>{pedidoActual.nota}</Text>
-            </View>
-          ) : null}
-
-          <Pressable
-            style={styles.botonAtender}
-            onPress={atenderSiguiente}
-          >
-            <Text style={styles.textoBoton}>
-              Atender siguiente
-            </Text>
-          </Pressable>
-          <DondeEstoy />
-        </View>
-      )}
-
-      <Link
-        href="/cocina/atendidos"
-        style={styles.link}
-      >
-        Ver pedidos atendidos
-      </Link>
-
-      <Pressable
-        style={styles.botonSalir}
-        onPress={cerrarSesion}
-      >
-        <Text style={styles.textoBoton}>
-          Cerrar sesión
-        </Text>
-      </Pressable>
-    </ScrollView>
-  );
-}
+import { COLORES, SOMBRA } from '@/constants/theme';
+import { useApp } from '@/context/AppContext';
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
     gap: 15,
+    backgroundColor: COLORES.crema,
+    flexGrow: 1,
   },
 
   titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontWeight: '800',
+    color: COLORES.azulOscuro,
   },
 
   espera: {
-    fontSize: 18,
+    backgroundColor: COLORES.verdeClaro,
+    color: COLORES.verdeOscuro,
+    padding: 12,
+    borderRadius: 12,
+    fontWeight: '700',
   },
 
   pedido: {
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#dddddd',
-    borderRadius: 10,
-    gap: 8,
+    padding: 20,
+    backgroundColor: COLORES.azul,
+    borderRadius: 20,
+    gap: 10,
+    ...SOMBRA,
   },
 
   numero: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    color: COLORES.crema,
+    fontSize: 24,
+    fontWeight: '800',
   },
 
   subtitulo: {
-    fontWeight: 'bold',
+    color: COLORES.crema,
+    fontWeight: '700',
   },
 
   nota: {
     marginTop: 10,
-    padding: 10,
-    backgroundColor: '#f2f2f2',
-    borderRadius: 8,
+    padding: 12,
+    backgroundColor: COLORES.azulClaro,
+    borderRadius: 12,
   },
 
   botonAtender: {
-    backgroundColor: '#06d6a0',
-    paddingVertical: 14,
-    borderRadius: 10,
+    backgroundColor: COLORES.verde,
+    paddingVertical: 15,
+    borderRadius: 14,
     alignItems: 'center',
     marginTop: 10,
   },
 
   botonSalir: {
-    backgroundColor: '#ef476f',
-    paddingVertical: 14,
-    borderRadius: 10,
+    backgroundColor: COLORES.error,
+    paddingVertical: 15,
+    borderRadius: 14,
     alignItems: 'center',
   },
 
   textoBoton: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: COLORES.blanco,
+    fontWeight: '800',
   },
 
   link: {
-    color: '#118ab2',
-    fontWeight: '600',
+    backgroundColor: COLORES.blanco,
+    padding: 15,
+    borderRadius: 14,
+    color: COLORES.azul,
+    fontWeight: '700',
+    overflow: 'hidden',
   },
 });

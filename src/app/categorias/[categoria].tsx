@@ -1,4 +1,10 @@
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+  Link,
+  Stack,
+  useLocalSearchParams,
+} from 'expo-router';
+
 import {
   ScrollView,
   StyleSheet,
@@ -6,8 +12,9 @@ import {
   View,
 } from 'react-native';
 
-import { CategoriaPlato, platos } from '@/data/plato';
 import DondeEstoy from '@/components/DondeEstoy';
+import { COLORES, SOMBRA } from '@/constants/theme';
+import { CategoriaPlato, platos } from '@/data/plato';
 
 const categoriasValidas: CategoriaPlato[] = [
   'desayuno',
@@ -17,132 +24,243 @@ const categoriasValidas: CategoriaPlato[] = [
 ];
 
 export default function CategoriaScreen() {
-  /*
-    Leemos la categoría desde la URL.
-
-    Ejemplo:
-    /categorias/bebidas
-
-    categoria = "bebidas"
-  */
   const { categoria } =
     useLocalSearchParams<{ categoria: string }>();
 
-  /*
-    Validamos que la categoría recibida
-    realmente exista dentro de las categorías permitidas.
-  */
   const categoriaValida = categoriasValidas.find(
     (item) => item === categoria
   );
 
-  /*
-    Si la categoría no existe,
-    mostramos un mensaje de error.
-  */
   if (!categoriaValida) {
     return (
-      <View style={styles.container}>
+      <View style={styles.errorContainer}>
         <Stack.Screen
           options={{
             title: 'Categoría no encontrada',
+            headerStyle: {
+              backgroundColor: COLORES.azul,
+            },
+            headerTintColor: COLORES.crema,
           }}
         />
 
-        <Text style={styles.titulo}>
+        <View style={styles.iconoError}>
+          <Ionicons
+            name="alert-circle-outline"
+            size={55}
+            color={COLORES.error}
+          />
+        </View>
+
+        <Text style={styles.tituloError}>
           Categoría no encontrada
         </Text>
 
-        <Text>
+        <Text style={styles.descripcionError}>
           La categoría "{categoria}" no existe.
         </Text>
+
+        <Link href="/menu" style={styles.botonVolver}>
+          Volver al menú
+        </Link>
+
         <DondeEstoy />
       </View>
     );
   }
 
-  /*
-    Filtramos todos los platos
-    y nos quedamos solamente con los
-    que pertenecen a la categoría actual.
-  */
   const platosDeCategoria = platos.filter(
     (plato) => plato.categoria === categoriaValida
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      style={styles.pantalla}
+      contentContainerStyle={styles.container}
+    >
       <Stack.Screen
         options={{
           title: categoriaValida.toUpperCase(),
+          headerStyle: {
+            backgroundColor: COLORES.azul,
+          },
+          headerTintColor: COLORES.crema,
         }}
       />
 
-      <Text style={styles.titulo}>
-        {categoriaValida.toUpperCase()}
-      </Text>
+      <View style={styles.header}>
+        <Text style={styles.titulo}>
+          {categoriaValida.toUpperCase()}
+        </Text>
 
-      {platosDeCategoria.map((plato) => (
-        <Link
-          key={plato.id}
-          href={{
-            pathname: '/menu/[id]',
-            params: {
-              id: plato.id.toString(),
-            },
-          }}
-          style={styles.tarjeta}
-        >
-          <View>
-            <Text style={styles.nombre}>
-              {plato.nombre}
-            </Text>
+        <Text style={styles.descripcionHeader}>
+          Platos disponibles en esta categoría
+        </Text>
+      </View>
 
-            <Text style={styles.descripcion}>
-              {plato.descripcion}
-            </Text>
+      <View style={styles.lista}>
+        {platosDeCategoria.map((plato) => (
+          <Link
+            key={plato.id}
+            href={{
+              pathname: '/menu/[id]',
+              params: {
+                id: plato.id.toString(),
+              },
+            }}
+            style={styles.tarjeta}
+          >
+            <View style={styles.contenidoTarjeta}>
+              <View style={styles.icono}>
+                <Ionicons
+                  name="restaurant-outline"
+                  size={23}
+                  color={COLORES.verde}
+                />
+              </View>
 
-            <Text style={styles.precio}>
-              ${plato.precio}
-            </Text>
-          </View>
-        </Link>
-      ))}
+              <View style={styles.info}>
+                <Text style={styles.nombre}>
+                  {plato.nombre}
+                </Text>
+
+                <Text style={styles.descripcion}>
+                  {plato.descripcion}
+                </Text>
+
+                <Text style={styles.precio}>
+                  ${plato.precio}
+                </Text>
+              </View>
+
+              <Ionicons
+                name="chevron-forward"
+                size={22}
+                color={COLORES.textoSecundario}
+              />
+            </View>
+          </Link>
+        ))}
+      </View>
+
       <DondeEstoy />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  pantalla: {
+    flex: 1,
+    backgroundColor: COLORES.crema,
+  },
+
   container: {
-    padding: 20,
-    gap: 15,
+    paddingBottom: 30,
+  },
+
+  header: {
+    backgroundColor: COLORES.azul,
+    padding: 24,
+    borderBottomLeftRadius: 26,
+    borderBottomRightRadius: 26,
+    marginBottom: 20,
   },
 
   titulo: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: '800',
+    color: COLORES.crema,
+  },
+
+  descripcionHeader: {
+    marginTop: 5,
+    color: '#dbe2e5',
+  },
+
+  lista: {
+    paddingHorizontal: 20,
+    gap: 12,
   },
 
   tarjeta: {
-    padding: 15,
+    backgroundColor: COLORES.blanco,
+    borderRadius: 18,
+    padding: 16,
     borderWidth: 1,
-    borderColor: '#dddddd',
-    borderRadius: 10,
+    borderColor: COLORES.borde,
+    overflow: 'hidden',
+    ...SOMBRA,
+  },
+
+  contenidoTarjeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+
+  icono: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORES.verdeClaro,
+  },
+
+  info: {
+    flex: 1,
   },
 
   nombre: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
+    color: COLORES.texto,
   },
 
   descripcion: {
     marginTop: 4,
-    color: '#666666',
+    color: COLORES.textoSecundario,
   },
 
   precio: {
+    marginTop: 7,
+    fontWeight: '800',
+    color: COLORES.verdeOscuro,
+  },
+
+  errorContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: COLORES.crema,
+  },
+
+  iconoError: {
+    marginBottom: 12,
+  },
+
+  tituloError: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: COLORES.texto,
+    textAlign: 'center',
+  },
+
+  descripcionError: {
     marginTop: 8,
-    fontWeight: 'bold',
+    color: COLORES.textoSecundario,
+    textAlign: 'center',
+  },
+
+  botonVolver: {
+    marginTop: 24,
+    backgroundColor: COLORES.verde,
+    color: COLORES.blanco,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 14,
+    overflow: 'hidden',
+    fontWeight: '800',
   },
 });

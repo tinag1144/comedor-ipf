@@ -1,20 +1,20 @@
-import DondeEstoy from '@/components/DondeEstoy';
-import { Link, Stack, usePathname } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+  Link,
+  Stack,
+  usePathname,
+} from 'expo-router';
+
 import {
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 
+import DondeEstoy from '@/components/DondeEstoy';
+import { COLORES, SOMBRA } from '@/constants/theme';
+
 export default function NotFoundScreen() {
-  /*
-    usePathname() nos devuelve la ruta actual.
-
-    Ejemplo:
-    si alguien entra a /algo-que-no-existe
-
-    pathname = "/algo-que-no-existe"
-  */
   const pathname = usePathname();
 
   return (
@@ -22,22 +22,42 @@ export default function NotFoundScreen() {
       <Stack.Screen
         options={{
           title: 'Página no encontrada',
+          headerStyle: {
+            backgroundColor: COLORES.azul,
+          },
+          headerTintColor: COLORES.crema,
         }}
       />
 
-      <Text style={styles.codigo}>404</Text>
+      <View style={styles.icono}>
+        <Ionicons
+          name="compass-outline"
+          size={65}
+          color={COLORES.error}
+        />
+      </View>
+
+      <Text style={styles.codigo}>
+        404
+      </Text>
 
       <Text style={styles.titulo}>
         Ruta no encontrada
       </Text>
 
       <Text style={styles.descripcion}>
-        La ruta que intentaste abrir no existe.
+        La dirección que intentaste abrir no existe.
       </Text>
 
-      <Text style={styles.ruta}>
-        Ruta: {pathname}
-      </Text>
+      <View style={styles.rutaCard}>
+        <Text style={styles.rutaLabel}>
+          Ruta solicitada
+        </Text>
+
+        <Text style={styles.ruta}>
+          {pathname}
+        </Text>
+      </View>
 
       <Link
         href="/"
@@ -45,6 +65,7 @@ export default function NotFoundScreen() {
       >
         Volver al inicio
       </Link>
+
       <DondeEstoy />
     </View>
   );
@@ -53,38 +74,63 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: COLORES.crema,
+  },
+
+  icono: {
+    marginBottom: 5,
   },
 
   codigo: {
-    fontSize: 72,
-    fontWeight: 'bold',
-    color: '#ef476f',
+    fontSize: 70,
+    fontWeight: '900',
+    color: COLORES.azul,
   },
 
   titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginTop: 10,
+    fontSize: 27,
+    fontWeight: '800',
+    color: COLORES.texto,
   },
 
   descripcion: {
-    fontSize: 16,
-    color: '#666666',
     marginTop: 10,
     textAlign: 'center',
+    color: COLORES.textoSecundario,
+  },
+
+  rutaCard: {
+    width: '100%',
+    marginTop: 25,
+    backgroundColor: COLORES.blanco,
+    borderRadius: 16,
+    padding: 17,
+    ...SOMBRA,
+  },
+
+  rutaLabel: {
+    fontSize: 12,
+    color: COLORES.textoSecundario,
   },
 
   ruta: {
-    marginTop: 20,
-    fontWeight: '600',
+    marginTop: 4,
+    fontWeight: '700',
+    color: COLORES.texto,
   },
 
   link: {
-    marginTop: 30,
-    color: '#118ab2',
-    fontWeight: 'bold',
+    width: '100%',
+    marginTop: 16,
+    backgroundColor: COLORES.verde,
+    color: COLORES.blanco,
+    padding: 15,
+    borderRadius: 15,
+    overflow: 'hidden',
+    textAlign: 'center',
+    fontWeight: '800',
   },
 });

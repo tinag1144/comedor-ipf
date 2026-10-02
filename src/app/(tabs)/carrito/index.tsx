@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
 import {
   Pressable,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 
 import DondeEstoy from '@/components/DondeEstoy';
+import { COLORES, SOMBRA } from '@/constants/theme';
 import { useApp } from '@/context/AppContext';
 
 export default function CarritoScreen() {
@@ -25,168 +27,271 @@ export default function CarritoScreen() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.titulo}>Carrito</Text>
+    <ScrollView
+      style={styles.pantalla}
+      contentContainerStyle={styles.container}
+    >
+      <View style={styles.header}>
+        <Text style={styles.titulo}>Carrito</Text>
 
-      {carrito.length === 0 ? (
-        <Text>El carrito está vacío.</Text>
-      ) : (
-        <>
-          {carrito.map((plato, indice) => (
-            <View
-              key={`${plato.id}-${indice}`}
-              style={styles.item}
-            >
-              <View>
-                <Text style={styles.nombre}>
-                  {plato.nombre}
-                </Text>
+        <Text style={styles.headerTexto}>
+          Revisá tu pedido antes de confirmar
+        </Text>
+      </View>
 
-                <Text style={styles.descripcion}>
-                  {plato.descripcion}
-                </Text>
-              </View>
+      <View style={styles.contenido}>
+        {carrito.length === 0 ? (
+          <View style={styles.vacio}>
+            <Ionicons
+              name="cart-outline"
+              size={50}
+              color={COLORES.textoSecundario}
+            />
 
-              <Text style={styles.precio}>
-                ${plato.precio}
-              </Text>
-            </View>
-          ))}
-
-          <View style={styles.totalContainer}>
-            <Text style={styles.totalTexto}>
-              Total
+            <Text style={styles.vacioTitulo}>
+              Tu carrito está vacío
             </Text>
 
-            <Text style={styles.totalPrecio}>
-              ${total}
+            <Text style={styles.vacioTexto}>
+              Agregá platos desde el menú.
             </Text>
           </View>
-        </>
-      )}
+        ) : (
+          <>
+            {carrito.map((plato, indice) => (
+              <View
+                key={`${plato.id}-${indice}`}
+                style={styles.item}
+              >
+                <View style={styles.iconoItem}>
+                  <Ionicons
+                    name="fast-food-outline"
+                    size={22}
+                    color={COLORES.verde}
+                  />
+                </View>
 
-      <Pressable
-        style={[
-          styles.botonDeshacer,
-          !puedeDeshacer &&
-            styles.botonDeshabilitado,
-        ]}
-        onPress={deshacerUltimo}
-        disabled={!puedeDeshacer}
-      >
-        <Text style={styles.textoBoton}>
-          Deshacer último
-        </Text>
-      </Pressable>
+                <View style={styles.infoItem}>
+                  <Text style={styles.nombre}>
+                    {plato.nombre}
+                  </Text>
 
-      <Link
-        href="/carrito/nota"
-        style={styles.linkNota}
-      >
-        {nota
-          ? `Editar nota: ${nota}`
-          : 'Agregar nota para cocina'}
-      </Link>
+                  <Text style={styles.descripcion}>
+                    {plato.descripcion}
+                  </Text>
+                </View>
 
-      <Link
-        href="/confirmar"
-        style={[
-          styles.botonConfirmar,
-          carrito.length === 0 &&
-            styles.botonDeshabilitado,
-        ]}
-      >
-        Confirmar pedido
-      </Link>
+                <Text style={styles.precio}>
+                  ${plato.precio}
+                </Text>
+              </View>
+            ))}
 
-      <DondeEstoy />
+            <View style={styles.totalContainer}>
+              <Text style={styles.totalTexto}>
+                Total
+              </Text>
+
+              <Text style={styles.totalPrecio}>
+                ${total}
+              </Text>
+            </View>
+          </>
+        )}
+
+        <Pressable
+          style={[
+            styles.botonDeshacer,
+            !puedeDeshacer &&
+              styles.deshabilitado,
+          ]}
+          onPress={deshacerUltimo}
+          disabled={!puedeDeshacer}
+        >
+          <Ionicons
+            name="arrow-undo"
+            size={21}
+            color={COLORES.verdeOscuro}
+          />
+
+          <Text style={styles.textoDeshacer}>
+            Deshacer último
+          </Text>
+        </Pressable>
+
+        <Link
+          href="/carrito/nota"
+          style={styles.nota}
+        >
+          {nota
+            ? `Editar nota: ${nota}`
+            : 'Agregar nota para cocina'}
+        </Link>
+
+        <Link
+          href="/confirmar"
+          style={[
+            styles.botonConfirmar,
+            carrito.length === 0 &&
+              styles.deshabilitado,
+          ]}
+        >
+          Confirmar pedido
+        </Link>
+
+        <DondeEstoy />
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  pantalla: {
+    backgroundColor: COLORES.crema,
+  },
+
   container: {
-    padding: 20,
-    gap: 15,
+    paddingBottom: 30,
+  },
+
+  header: {
+    backgroundColor: COLORES.azul,
+    padding: 24,
+    paddingTop: 30,
+    borderBottomLeftRadius: 26,
+    borderBottomRightRadius: 26,
   },
 
   titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    color: COLORES.crema,
+    fontSize: 30,
+    fontWeight: '800',
+  },
+
+  headerTexto: {
+    color: '#dbe2e5',
+    marginTop: 5,
+  },
+
+  contenido: {
+    padding: 20,
+    gap: 13,
   },
 
   item: {
-    borderWidth: 1,
-    borderColor: '#dddddd',
-    borderRadius: 10,
     padding: 15,
+    backgroundColor: COLORES.blanco,
+    borderRadius: 18,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 15,
+    alignItems: 'center',
+    gap: 12,
+    ...SOMBRA,
+  },
+
+  iconoItem: {
+    width: 45,
+    height: 45,
+    borderRadius: 22,
+    backgroundColor: COLORES.verdeClaro,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  infoItem: {
+    flex: 1,
   },
 
   nombre: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
+    color: COLORES.texto,
+    fontSize: 16,
   },
 
   descripcion: {
-    marginTop: 4,
-    color: '#666666',
+    color: COLORES.textoSecundario,
+    marginTop: 3,
   },
 
   precio: {
-    fontWeight: 'bold',
+    fontWeight: '800',
+    color: COLORES.texto,
   },
 
   totalContainer: {
+    backgroundColor: COLORES.blanco,
+    borderRadius: 18,
+    padding: 19,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    paddingTop: 15,
-    borderTopWidth: 1,
-    borderTopColor: '#dddddd',
+    ...SOMBRA,
   },
 
   totalTexto: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
 
   totalPrecio: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '800',
+    color: COLORES.verdeOscuro,
   },
 
   botonDeshacer: {
-    backgroundColor: '#ef476f',
-    paddingVertical: 14,
-    borderRadius: 10,
+    backgroundColor: COLORES.verdeClaro,
+    padding: 15,
+    borderRadius: 16,
     alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
   },
 
-  botonConfirmar: {
-    backgroundColor: '#06d6a0',
-    color: '#073b4c',
-    paddingVertical: 14,
-    borderRadius: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
+  textoDeshacer: {
+    color: COLORES.verdeOscuro,
+    fontWeight: '700',
+  },
+
+  nota: {
+    padding: 15,
+    color: COLORES.azul,
+    fontWeight: '700',
+    backgroundColor: COLORES.blanco,
+    borderRadius: 15,
     overflow: 'hidden',
   },
 
-  botonDeshabilitado: {
+  botonConfirmar: {
+    backgroundColor: COLORES.verde,
+    color: COLORES.blanco,
+    textAlign: 'center',
+    padding: 16,
+    borderRadius: 16,
+    overflow: 'hidden',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+
+  deshabilitado: {
     opacity: 0.4,
   },
 
-  textoBoton: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  vacio: {
+    alignItems: 'center',
+    backgroundColor: COLORES.blanco,
+    padding: 35,
+    borderRadius: 20,
   },
 
-  linkNota: {
-    color: '#118ab2',
-    fontWeight: '600',
+  vacioTitulo: {
+    marginTop: 12,
+    fontSize: 19,
+    fontWeight: '700',
+    color: COLORES.texto,
+  },
+
+  vacioTexto: {
+    color: COLORES.textoSecundario,
+    marginTop: 4,
   },
 });

@@ -1,35 +1,56 @@
-import { Stack, useLocalSearchParams } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import DondeEstoy from "@/components/DondeEstoy";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+  Stack,
+  useLocalSearchParams,
+} from 'expo-router';
 
-import { useApp } from "@/context/AppContext";
-import { platos } from "@/data/plato";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import DondeEstoy from '@/components/DondeEstoy';
+import { COLORES, SOMBRA } from '@/constants/theme';
+import { useApp } from '@/context/AppContext';
+import { platos } from '@/data/plato';
+
 export default function DetallePlatoScreen() {
-  // Lee el parámetro dinámico de la URL.
-  // Ejemplo: /menu/4 -> id = "4"
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id } =
+    useLocalSearchParams<{ id: string }>();
 
-  // Los parámetros llegan como texto, por eso lo convertimos a number.
   const idNumerico = Number(id);
 
-  // Buscamos el plato cuyo id coincida.
-  const plato = platos.find((p) => p.id === idNumerico);
+  const plato = platos.find(
+    (p) => p.id === idNumerico
+  );
 
-  // Traemos la función global del Context.
   const { agregarAlCarrito } = useApp();
 
-  // Si el plato no existe, mostramos un mensaje.
   if (!plato) {
     return (
       <View style={styles.container}>
         <Stack.Screen
           options={{
-            title: "Plato no encontrado",
+            title: 'Plato no encontrado',
           }}
         />
 
-        <Text style={styles.titulo}>Plato no encontrado</Text>
-        <Text>No existe un plato con el id {id}.</Text>
+        <Ionicons
+          name="alert-circle-outline"
+          size={60}
+          color={COLORES.error}
+        />
+
+        <Text style={styles.titulo}>
+          Plato no encontrado
+        </Text>
+
+        <Text style={styles.descripcion}>
+          No existe un plato con el id {id}.
+        </Text>
+
         <DondeEstoy />
       </View>
     );
@@ -37,25 +58,63 @@ export default function DetallePlatoScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Cambiamos el título del header según el plato */}
       <Stack.Screen
         options={{
           title: plato.nombre,
+          headerStyle: {
+            backgroundColor: COLORES.azul,
+          },
+          headerTintColor: COLORES.crema,
         }}
       />
 
-      <Text style={styles.titulo}>{plato.nombre}</Text>
+      <View style={styles.iconoGrande}>
+        <Ionicons
+          name="restaurant"
+          size={50}
+          color={COLORES.verde}
+        />
+      </View>
 
-      <Text style={styles.categoria}>Categoría: {plato.categoria}</Text>
+      <Text style={styles.titulo}>
+        {plato.nombre}
+      </Text>
 
-      <Text style={styles.descripcion}>{plato.descripcion}</Text>
+      <Text style={styles.categoria}>
+        {plato.categoria.toUpperCase()}
+      </Text>
 
-      <Text style={styles.precio}>${plato.precio}</Text>
+      <Text style={styles.descripcion}>
+        {plato.descripcion}
+      </Text>
 
-      {/* Al tocar el botón llamamos a la función global */}
-      <Pressable style={styles.boton} onPress={() => agregarAlCarrito(plato)}>
-        <Text style={styles.textoBoton}>Agregar al carrito</Text>
+      <View style={styles.precioCard}>
+        <Text style={styles.precioLabel}>
+          Precio
+        </Text>
+
+        <Text style={styles.precio}>
+          ${plato.precio}
+        </Text>
+      </View>
+
+      <Pressable
+        style={styles.boton}
+        onPress={() =>
+          agregarAlCarrito(plato)
+        }
+      >
+        <Ionicons
+          name="cart-outline"
+          size={21}
+          color={COLORES.blanco}
+        />
+
+        <Text style={styles.textoBoton}>
+          Agregar al carrito
+        </Text>
       </Pressable>
+
       <DondeEstoy />
     </View>
   );
@@ -65,41 +124,81 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    alignItems: 'center',
+    backgroundColor: COLORES.crema,
+  },
+
+  iconoGrande: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: COLORES.verdeClaro,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 20,
   },
 
   titulo: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: 29,
+    fontWeight: '800',
+    color: COLORES.texto,
+    textAlign: 'center',
   },
 
   categoria: {
-    fontSize: 16,
-    marginBottom: 10,
+    marginTop: 8,
+    color: COLORES.verdeOscuro,
+    fontWeight: '800',
+    letterSpacing: 1,
   },
 
   descripcion: {
     fontSize: 16,
-    marginBottom: 20,
+    lineHeight: 23,
+    color: COLORES.textoSecundario,
+    textAlign: 'center',
+    marginTop: 14,
+  },
+
+  precioCard: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: COLORES.blanco,
+    padding: 18,
+    borderRadius: 18,
+    marginTop: 25,
+    ...SOMBRA,
+  },
+
+  precioLabel: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: COLORES.texto,
   },
 
   precio: {
     fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 30,
+    fontWeight: '800',
+    color: COLORES.verdeOscuro,
   },
 
   boton: {
-    backgroundColor: "#118ab2",
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
+    width: '100%',
+    marginTop: 15,
+    backgroundColor: COLORES.verde,
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
   },
 
   textoBoton: {
-    color: "white",
+    color: COLORES.blanco,
+    fontWeight: '800',
     fontSize: 16,
-    fontWeight: "bold",
   },
 });

@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 // Si DEBUG es false, el componente no se muestra.
 // Esto nos permite ocultarlo fácilmente al entregar la app.
-const DEBUG = true;
+const DEBUG = false;
 
 export default function DondeEstoy() {
   // Devuelve la ruta actual.

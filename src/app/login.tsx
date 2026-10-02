@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -8,8 +9,9 @@ import {
   View,
 } from 'react-native';
 
-import { useApp } from '@/context/AppContext';
 import DondeEstoy from '@/components/DondeEstoy';
+import { COLORES, SOMBRA } from '@/constants/theme';
+import { useApp } from '@/context/AppContext';
 
 export default function LoginScreen() {
   const { iniciarSesion } = useApp();
@@ -27,108 +29,145 @@ export default function LoginScreen() {
     }
 
     setError('');
-
-    /*
-      Después del login navegamos a cocina.
-
-      Como login está protegido con !conSesion,
-      al iniciar sesión deja de existir en el historial.
-    */
     router.replace('/cocina');
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.pantalla}>
       <Stack.Screen
         options={{
-          title: 'Login cocina',
+          title: 'Acceso Cocina',
+          headerStyle: {
+            backgroundColor: COLORES.azul,
+          },
+          headerTintColor: COLORES.crema,
         }}
       />
 
-      <Text style={styles.titulo}>
-        Acceso de cocina
-      </Text>
+      <View style={styles.tarjeta}>
+        <View style={styles.icono}>
+          <Ionicons
+            name="person-circle-outline"
+            size={52}
+            color={COLORES.verde}
+          />
+        </View>
 
-      <Text style={styles.descripcion}>
-        Ingresá con las credenciales del personal.
-      </Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Usuario"
-        value={usuario}
-        onChangeText={setUsuario}
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Clave"
-        value={clave}
-        onChangeText={setClave}
-        secureTextEntry
-      />
-
-      {error ? (
-        <Text style={styles.error}>
-          {error}
+        <Text style={styles.titulo}>
+          Acceso de cocina
         </Text>
-      ) : null}
 
-      <Pressable
-        style={styles.boton}
-        onPress={ingresar}
-      >
-        <Text style={styles.textoBoton}>
-          Ingresar
+        <Text style={styles.descripcion}>
+          Ingresá con las credenciales del personal.
         </Text>
-      </Pressable>
-      <DondeEstoy />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Usuario"
+          placeholderTextColor={COLORES.textoSecundario}
+          value={usuario}
+          onChangeText={setUsuario}
+          autoCapitalize="none"
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Clave"
+          placeholderTextColor={COLORES.textoSecundario}
+          value={clave}
+          onChangeText={setClave}
+          secureTextEntry
+        />
+
+        {error ? (
+          <Text style={styles.error}>{error}</Text>
+        ) : null}
+
+        <Pressable
+          style={styles.boton}
+          onPress={ingresar}
+        >
+          <Text style={styles.textoBoton}>
+            Ingresar
+          </Text>
+        </Pressable>
+
+        <Text style={styles.ayuda}>
+          Usuario: cocina · Clave: 1234
+        </Text>
+
+        <DondeEstoy />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  pantalla: {
     flex: 1,
-    padding: 20,
     justifyContent: 'center',
+    padding: 20,
+    backgroundColor: COLORES.crema,
   },
 
-  titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  tarjeta: {
+    backgroundColor: COLORES.blanco,
+    padding: 24,
+    borderRadius: 24,
+    ...SOMBRA,
+  },
+
+  icono: {
+    alignItems: 'center',
     marginBottom: 10,
   },
 
+  titulo: {
+    fontSize: 27,
+    fontWeight: '800',
+    color: COLORES.texto,
+    textAlign: 'center',
+  },
+
   descripcion: {
-    marginBottom: 20,
-    color: '#666666',
+    textAlign: 'center',
+    color: COLORES.textoSecundario,
+    marginTop: 7,
+    marginBottom: 22,
   },
 
   input: {
     borderWidth: 1,
-    borderColor: '#cccccc',
-    borderRadius: 10,
-    padding: 12,
+    borderColor: COLORES.borde,
+    backgroundColor: COLORES.cremaClaro,
+    borderRadius: 14,
+    padding: 14,
     marginBottom: 12,
+    color: COLORES.texto,
   },
 
   error: {
-    color: '#ef476f',
+    color: COLORES.error,
     marginBottom: 12,
   },
 
   boton: {
-    backgroundColor: '#118ab2',
-    paddingVertical: 14,
-    borderRadius: 10,
+    backgroundColor: COLORES.verde,
+    paddingVertical: 15,
+    borderRadius: 14,
     alignItems: 'center',
   },
 
   textoBoton: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: COLORES.blanco,
+    fontWeight: '800',
     fontSize: 16,
+  },
+
+  ayuda: {
+    marginTop: 16,
+    textAlign: 'center',
+    color: COLORES.textoSecundario,
+    fontSize: 12,
   },
 });

@@ -1,36 +1,59 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Drawer } from 'expo-router/drawer';
+
+import { COLORES } from '@/constants/theme';
 
 export default function CocinaLayout() {
   return (
-    <Drawer>
-      {/*
-        index.tsx representa la ruta /cocina.
+    <Drawer
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: COLORES.azul,
+        },
 
-        Esta va a ser la pantalla principal
-        donde vemos el pedido que está al frente
-        de la cola.
-      */}
+        headerTintColor: COLORES.crema,
+
+        drawerActiveTintColor: COLORES.verde,
+
+        drawerInactiveTintColor: COLORES.texto,
+
+        drawerActiveBackgroundColor:
+          COLORES.verdeClaro,
+
+        drawerStyle: {
+          backgroundColor: COLORES.cremaClaro,
+        },
+      }}
+    >
       <Drawer.Screen
         name="index"
         options={{
           title: 'Cocina',
           drawerLabel: 'Pedido actual',
+
+          drawerIcon: ({ color, size }) => (
+            <Ionicons
+              name="restaurant"
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
 
-      {/*
-        atendidos.tsx representa:
-
-        /cocina/atendidos
-
-        Aparece como otra opción dentro
-        del menú lateral.
-      */}
       <Drawer.Screen
         name="atendidos"
         options={{
           title: 'Pedidos atendidos',
           drawerLabel: 'Pedidos atendidos',
+
+          drawerIcon: ({ color, size }) => (
+            <Ionicons
+              name="checkmark-circle"
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
     </Drawer>
