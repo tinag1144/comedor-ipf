@@ -3,6 +3,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppProvider, useApp } from '@/context/AppContext';
 
+export const unstable_settings = {
+  anchor: '(tabs)',
+};
+
 function NavegacionRaiz() {
   // Si usuario tiene un valor, hay una sesión iniciada.
   const { usuario } = useApp();
