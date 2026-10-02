@@ -1,21 +1,23 @@
 import { Stack, useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { useApp } from "@/context/AppContext";
 import { platos } from "@/data/plato";
 export default function DetallePlatoScreen() {
-  // Leemos el parámetro dinámico de la URL.
-  // Ejemplo: /menu/4  ->  id = "4"
+  // Lee el parámetro dinámico de la URL.
+  // Ejemplo: /menu/4 -> id = "4"
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  // Los parámetros de URL llegan como texto.
-  // Como nuestros platos tienen id numérico, lo convertimos.
+  // Los parámetros llegan como texto, por eso lo convertimos a number.
   const idNumerico = Number(id);
 
-  // find() busca el primer plato cuyo id coincida.
-  // Si no encuentra ninguno, devuelve undefined.
+  // Buscamos el plato cuyo id coincida.
   const plato = platos.find((p) => p.id === idNumerico);
 
-  // Validamos si el plato existe.
+  // Traemos la función global del Context.
+  const { agregarAlCarrito } = useApp();
+
+  // Si el plato no existe, mostramos un mensaje.
   if (!plato) {
     return (
       <View style={styles.container}>
@@ -33,7 +35,7 @@ export default function DetallePlatoScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Cambiamos dinámicamente el título del header */}
+      {/* Cambiamos el título del header según el plato */}
       <Stack.Screen
         options={{
           title: plato.nombre,
@@ -48,8 +50,10 @@ export default function DetallePlatoScreen() {
 
       <Text style={styles.precio}>${plato.precio}</Text>
 
-      {/* El botón "Agregar al carrito" lo hacemos después,
-          cuando creemos el estado global. */}
+      {/* Al tocar el botón llamamos a la función global */}
+      <Pressable style={styles.boton} onPress={() => agregarAlCarrito(plato)}>
+        <Text style={styles.textoBoton}>Agregar al carrito</Text>
+      </Pressable>
     </View>
   );
 }
@@ -78,6 +82,21 @@ const styles = StyleSheet.create({
 
   precio: {
     fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 30,
+  },
+
+  boton: {
+    backgroundColor: "#118ab2",
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  textoBoton: {
+    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
