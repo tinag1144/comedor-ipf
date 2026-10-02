@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 
 import { useApp } from '@/context/AppContext';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabsLayout() {
   const { carrito } = useApp();
