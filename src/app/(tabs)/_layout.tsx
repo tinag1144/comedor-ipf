@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
   return (
@@ -6,21 +6,23 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Inicio',
+          title: "Inicio",
         }}
       />
 
       <Tabs.Screen
         name="menu"
         options={{
-          title: 'Menú',
+          title: "Menú",
+          headerShown: false,
         }}
       />
 
       <Tabs.Screen
         name="carrito"
         options={{
-          title: 'Carrito',
+          title: "Carrito",
+          headerShown: false,
         }}
       />
     </Tabs>
