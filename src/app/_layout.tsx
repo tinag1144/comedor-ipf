@@ -1,17 +1,17 @@
 import { Stack } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppProvider, useApp } from '@/context/AppContext';
 
 function NavegacionRaiz() {
-  // Leemos el usuario desde el Context global.
+  // Si usuario tiene un valor, hay una sesión iniciada.
   const { usuario } = useApp();
 
-  // Si usuario no es null, hay sesión iniciada.
   const conSesion = usuario !== null;
 
   return (
     <Stack>
-      {/* La navegación principal siempre existe */}
+      {/* Navegación principal del alumno */}
       <Stack.Screen
         name="(tabs)"
         options={{
@@ -19,7 +19,7 @@ function NavegacionRaiz() {
         }}
       />
 
-      {/* Confirmar pedido se presenta como modal */}
+      {/* Modal para revisar el pedido antes de confirmarlo */}
       <Stack.Screen
         name="confirmar"
         options={{
@@ -28,7 +28,7 @@ function NavegacionRaiz() {
         }}
       />
 
-      {/* Turno pertenece al Stack raíz */}
+      {/* Pantalla dinámica del turno */}
       <Stack.Screen
         name="turno/[numero]"
         options={{
@@ -37,25 +37,23 @@ function NavegacionRaiz() {
       />
 
       {/*
-        Estas rutas SOLO existen cuando hay sesión.
-
-        Si conSesion es false, Expo Router las elimina
-        de la navegación.
+        Cocina solamente existe cuando
+        hay una sesión iniciada.
       */}
       <Stack.Protected guard={conSesion}>
         <Stack.Screen
           name="cocina"
           options={{
+            // Ocultamos el header del Stack raíz
+            // porque el Drawer tendrá su propio header.
             headerShown: false,
           }}
         />
       </Stack.Protected>
 
       {/*
-        Login SOLO existe cuando NO hay sesión.
-
-        El signo ! significa "negación".
-        !conSesion = no hay sesión.
+        Login solamente existe cuando
+        NO hay una sesión iniciada.
       */}
       <Stack.Protected guard={!conSesion}>
         <Stack.Screen
@@ -72,8 +70,20 @@ function NavegacionRaiz() {
 
 export default function RootLayout() {
   return (
-    <AppProvider>
-      <NavegacionRaiz />
-    </AppProvider>
+    /*
+      GestureHandlerRootView permite que funcionen
+      correctamente los gestos usados por el Drawer.
+    */
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/*
+        AppProvider envuelve toda la aplicación.
+
+        De esta forma todas las pantallas pueden
+        acceder al Context global.
+      */}
+      <AppProvider>
+        <NavegacionRaiz />
+      </AppProvider>
+    </GestureHandlerRootView>
   );
 }
