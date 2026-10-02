@@ -1,53 +1,52 @@
-import { Link } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Link } from 'expo-router';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-import { CategoriaPlato, platos } from "@/data/plato";
-
-// Lista de categorías que queremos mostrar.
-// La tipamos como CategoriaPlato[] para que TypeScript
-// solo permita categorías válidas.
-const categorias: CategoriaPlato[] = [
-  "desayuno",
-  "almuerzo",
-  "bebidas",
-  "kiosco",
-];
-
-export default function MenuScreen() {
+export default function InicioScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.titulo}>Menú</Text>
+      <Text style={styles.titulo}>Comedor IPF</Text>
 
-      {categorias.map((categoria) => {
-        // filter() devuelve solamente los platos
-        // que pertenecen a esta categoría.
-        const platosDeCategoria = platos.filter(
-          (plato) => plato.categoria === categoria,
-        );
+      <Text style={styles.saludo}>
+        Bienvenido/a al sistema de pedidos.
+      </Text>
 
-        return (
-          <View key={categoria} style={styles.seccion}>
-            <Text style={styles.categoria}>{categoria.toUpperCase()}</Text>
+      <Text style={styles.subtitulo}>
+        Accesos rápidos
+      </Text>
 
-            {platosDeCategoria.map((plato) => (
-              <Link
-                key={plato.id}
-                href={{
-                  pathname: "/menu/[id]",
-                  params: { id: plato.id.toString() },
-                }}
-                style={styles.tarjeta}
-              >
-                <View>
-                  <Text style={styles.nombre}>{plato.nombre}</Text>
-                  <Text style={styles.descripcion}>{plato.descripcion}</Text>
-                  <Text style={styles.precio}>${plato.precio}</Text>
-                </View>
-              </Link>
-            ))}
+      <View style={styles.grid}>
+        <Link href="/menu" style={styles.tarjeta}>
+          <View>
+            <Text style={styles.tarjetaTitulo}>Menú</Text>
+            <Text style={styles.tarjetaTexto}>
+              Ver los platos disponibles.
+            </Text>
           </View>
-        );
-      })}
+        </Link>
+
+        <Link href="/buscar" style={styles.tarjeta}>
+          <View>
+            <Text style={styles.tarjetaTitulo}>Buscar</Text>
+            <Text style={styles.tarjetaTexto}>
+              Buscar platos por nombre o categoría.
+            </Text>
+          </View>
+        </Link>
+
+        <Link href="/login" style={styles.tarjeta}>
+          <View>
+            <Text style={styles.tarjetaTitulo}>Cocina</Text>
+            <Text style={styles.tarjetaTexto}>
+              Ingreso del personal de cocina.
+            </Text>
+          </View>
+        </Link>
+      </View>
     </ScrollView>
   );
 }
@@ -55,42 +54,46 @@ export default function MenuScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    gap: 24,
+    gap: 20,
   },
 
   titulo: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#073b4c',
   },
 
-  seccion: {
+  saludo: {
+    fontSize: 16,
+    color: '#666666',
+  },
+
+  subtitulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+
+  grid: {
     gap: 12,
   },
 
-  categoria: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-
   tarjeta: {
-    padding: 16,
+    padding: 18,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#dddddd",
-    borderRadius: 10,
+    borderColor: '#dddddd',
+    backgroundColor: '#ffffff',
   },
 
-  nombre: {
+  tarjetaTitulo: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: 'bold',
+    color: '#118ab2',
   },
 
-  descripcion: {
-    marginTop: 4,
-    color: "#666666",
-  },
-
-  precio: {
-    marginTop: 8,
-    fontWeight: "bold",
+  tarjetaTexto: {
+    marginTop: 5,
+    color: '#666666',
   },
 });

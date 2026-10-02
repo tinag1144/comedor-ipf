@@ -1,24 +1,108 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import { CategoriaPlato, platos } from '@/data/plato';
+
+const categorias: CategoriaPlato[] = [
+  'desayuno',
+  'almuerzo',
+  'bebidas',
+  'kiosco',
+];
 
 export default function MenuScreen() {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>Menú</Text>
-      <Text>Acá vamos a mostrar los platos.</Text>
-    </View>
+
+      {categorias.map((categoria) => {
+        const platosDeCategoria = platos.filter(
+          (plato) => plato.categoria === categoria
+        );
+
+        return (
+          <View key={categoria} style={styles.seccion}>
+            <Text style={styles.categoria}>
+              {categoria.toUpperCase()}
+            </Text>
+
+            {platosDeCategoria.map((plato) => (
+              <Link
+                key={plato.id}
+                href={{
+                  pathname: '/menu/[id]',
+                  params: {
+                    id: plato.id.toString(),
+                  },
+                }}
+                style={styles.tarjeta}
+              >
+                <View>
+                  <Text style={styles.nombre}>
+                    {plato.nombre}
+                  </Text>
+
+                  <Text style={styles.descripcion}>
+                    {plato.descripcion}
+                  </Text>
+
+                  <Text style={styles.precio}>
+                    ${plato.precio}
+                  </Text>
+                </View>
+              </Link>
+            ))}
+          </View>
+        );
+      })}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+    gap: 24,
   },
+
   titulo: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
+  },
+
+  seccion: {
+    gap: 12,
+  },
+
+  categoria: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  tarjeta: {
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#dddddd',
+    borderRadius: 10,
+  },
+
+  nombre: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+
+  descripcion: {
+    marginTop: 4,
+    color: '#666666',
+  },
+
+  precio: {
+    marginTop: 8,
+    fontWeight: 'bold',
   },
 });
